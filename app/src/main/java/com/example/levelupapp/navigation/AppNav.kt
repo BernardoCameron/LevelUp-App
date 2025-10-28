@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.levelupapp.ui.login.LoginScreen
-import com.example.levelupapp.ui.login.LoginViewModel
+import com.example.levelupapp.viewmodel.LoginViewModel
 import com.example.levelupapp.ui.login.RegisterScreen
 import com.example.levelupapp.ui.main.MainScreen
 import com.example.levelupapp.view.DrawerMenu

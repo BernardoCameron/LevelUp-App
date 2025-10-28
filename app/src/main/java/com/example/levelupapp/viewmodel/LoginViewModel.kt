@@ -1,4 +1,4 @@
-package com.example.levelupapp.ui.login
+package com.example.levelupapp.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +9,7 @@ import com.example.levelupapp.data.database.AppDatabase
 import com.example.levelupapp.data.repository.AuthRepository
 import kotlinx.coroutines.launch
 import android.content.Context
+import com.example.levelupapp.ui.login.LoginUiState
 
 class LoginViewModel(
     private val context: Context
@@ -34,14 +35,14 @@ class LoginViewModel(
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true, error = null)
 
-            val ok = repo.login(uiState.email.trim(), uiState.password)
+            val user = repo.login(uiState.email.trim(), uiState.password)
 
             uiState = uiState.copy(isLoading = false)
 
-            if (ok) {
-                onSuccess(uiState.email.trim())
+            if (user != null) {
+                onSuccess(user.username) //
             } else {
-                uiState = uiState.copy(error = "Credenciales invalidas")
+                uiState = uiState.copy(error = "Credenciales inválidas")
             }
         }
     }
