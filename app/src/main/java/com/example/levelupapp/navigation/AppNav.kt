@@ -9,6 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.levelupapp.ui.login.LoginScreen
+import com.example.levelupapp.ui.login.LoginViewModel
+import com.example.levelupapp.ui.login.RegisterScreen
+import com.example.levelupapp.ui.main.MainScreen
 import com.example.levelupapp.view.DrawerMenu
 import com.example.levelupapp.view.ProductoFormScreen
 
@@ -22,12 +25,15 @@ fun AppNav() {
         startDestination = "login"
     ) {
 
-        // Login
         composable("login") {
             LoginScreen(navController = navController)
         }
 
-        // Drawer principal (después del login)
+        composable("register") {
+            RegisterScreen(navController = navController)
+        }
+
+
         composable(
             route = "drawer/{username}",
             arguments = listOf(
@@ -35,7 +41,7 @@ fun AppNav() {
             )
         ) { backStackEntry ->
             val username = backStackEntry.arguments?.getString("username").orEmpty()
-            DrawerMenu(username = username, navController = navController)
+            MainScreen(userName = username, navController = navController)
         }
 
         // Formulario de producto

@@ -14,4 +14,7 @@ interface CredentialDao {
 
     @Query("SELECT * FROM credential_table WHERE username = :username LIMIT 1")
     suspend fun getUserByUsername(username: String): Credential?
+
+    @Query("SELECT * FROM credential_table WHERE email = :email LIMIT 1")
+    suspend fun getUserByEmail(email: String): Credential?
 }

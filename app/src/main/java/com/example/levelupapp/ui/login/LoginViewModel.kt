@@ -1,48 +1,48 @@
 package com.example.levelupapp.ui.login
 
-import android.app.Application
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-
 import com.example.levelupapp.data.database.AppDatabase
 import com.example.levelupapp.data.repository.AuthRepository
 import kotlinx.coroutines.launch
+import android.content.Context
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
+class LoginViewModel(
+    private val context: Context
+) : ViewModel() {
 
-    private val repo: AuthRepository
-    var uiState = mutableStateOf(LoginUiState())
-        private set
-
-    init {
-        val db = Room.databaseBuilder(
-            application.applicationContext,
-            AppDatabase::class.java,
-            "levelup_db"
-        ).build()
-
-        repo = AuthRepository(db.credentialDao())
+    private val repo: AuthRepository by lazy {
+        val db = AppDatabase.getDatabase(context)
+        AuthRepository(db.credentialDao())
     }
 
+    var uiState by mutableStateOf(LoginUiState())
+        private set
 
-    fun onUsernameChange(value: String) {
-        uiState.value = uiState.value.copy(username = value, error = null)
+    fun onEmailChange(value: String) {
+        uiState = uiState.copy(email = value, error = null)
     }
 
     fun onPasswordChange(value: String) {
-        uiState.value = uiState.value.copy(password = value, error = null)
+        uiState = uiState.copy(password = value, error = null)
     }
 
     fun login(onSuccess: (String) -> Unit) {
         viewModelScope.launch {
-            uiState.value = uiState.value.copy(isLoading = true, error = null)
-            val ok = repo.login(uiState.value.username.trim(), uiState.value.password)
-            uiState.value = uiState.value.copy(isLoading = false)
+            uiState = uiState.copy(isLoading = true, error = null)
 
-            if (ok) onSuccess(uiState.value.username.trim())
-            else uiState.value = uiState.value.copy(error = "Credenciales inválidas")
+            val ok = repo.login(uiState.email.trim(), uiState.password)
+
+            uiState = uiState.copy(isLoading = false)
+
+            if (ok) {
+                onSuccess(uiState.email.trim())
+            } else {
+                uiState = uiState.copy(error = "Credenciales invalidas")
+            }
         }
     }
 }

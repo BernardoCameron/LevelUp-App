@@ -5,14 +5,23 @@ import com.example.levelupapp.data.model.Credential
 
 class AuthRepository(private val dao: CredentialDao) {
 
-    suspend fun login(username: String, password: String): Boolean {
-        val user = dao.getUserByUsername(username)
+    suspend fun login(email: String, password: String): Boolean {
+        val user = dao.getUserByEmail(email)
         return user?.password == password
     }
 
-    suspend fun register(username: String, password: String): Boolean {
-        if (dao.getUserByUsername(username) != null) return false
-        dao.insert(Credential(username = username, password = password))
+    suspend fun register(name: String, email: String, password: String): Boolean {
+        if (dao.getUserByEmail(email) != null) return false
+
+        val dctoDuoc = email.endsWith("@duocuc.cl")
+        dao.insert(
+            Credential(
+                username = name,
+                email = email,
+                password = password,
+                dctoDuoc = dctoDuoc
+            )
+        )
         return true
     }
 }

@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 data class Credential(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val username: String,
-    val password: String
+    val email: String,
+    val password: String,
+    val dctoDuoc: Boolean = false
 )

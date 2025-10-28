@@ -1,5 +1,6 @@
 package com.example.levelupapp.ui.login
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -15,18 +17,18 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.levelupapp.R
 import com.example.levelupapp.ui.theme.LevelUpAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    navController: NavController,
-    vm: LoginViewModel = viewModel()
+    navController: NavController
 ) {
-    val state by vm.uiState
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val vm = remember { LoginViewModel(context) }
 
+    val state = vm.uiState
     var showPass by remember { mutableStateOf(false) }
 
     LevelUpAppTheme {
@@ -67,9 +69,9 @@ fun LoginScreen(
                 Spacer(Modifier.height(24.dp))
 
                 OutlinedTextField(
-                    value = state.username,
-                    onValueChange = vm::onUsernameChange,
-                    label = { Text("Usuario") },
+                    value = state.email,
+                    onValueChange = vm::onEmailChange,
+                    label = { Text("Correo electrónico") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
