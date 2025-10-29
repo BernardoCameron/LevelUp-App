@@ -11,12 +11,10 @@ import kotlinx.coroutines.launch
 import android.content.Context
 import com.example.levelupapp.ui.login.LoginUiState
 
-class LoginViewModel(
-    private val context: Context
-) : ViewModel() {
+class LoginViewModel : ViewModel() {
 
     private val repo: AuthRepository by lazy {
-        val db = AppDatabase.getDatabase(context)
+        val db = AppDatabase.instance
         AuthRepository(db.credentialDao())
     }
 
@@ -40,7 +38,7 @@ class LoginViewModel(
             uiState = uiState.copy(isLoading = false)
 
             if (user != null) {
-                onSuccess(user.username) //
+                onSuccess(user.username)
             } else {
                 uiState = uiState.copy(error = "Credenciales inválidas")
             }

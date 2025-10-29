@@ -3,6 +3,7 @@ package com.example.levelupapp.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,10 +15,11 @@ import com.example.levelupapp.ui.login.RegisterScreen
 import com.example.levelupapp.ui.main.MainScreen
 import com.example.levelupapp.view.DrawerMenu
 import com.example.levelupapp.view.ProductoFormScreen
+import com.example.levelupapp.viewmodel.MainViewModel
 
 @Composable
 fun AppNav() {
-
+    val mainViewModel: MainViewModel = viewModel()
     val navController = rememberNavController()
 
     NavHost(
@@ -26,7 +28,7 @@ fun AppNav() {
     ) {
 
         composable("login") {
-            LoginScreen(navController = navController)
+            LoginScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
         composable("register") {
@@ -34,14 +36,8 @@ fun AppNav() {
         }
 
 
-        composable(
-            route = "drawer/{username}",
-            arguments = listOf(
-                navArgument("username") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val username = backStackEntry.arguments?.getString("username").orEmpty()
-            MainScreen(userName = username, navController = navController)
+        composable("main"){
+            MainScreen(navController = navController, mainViewModel = mainViewModel)
         }
 
         // Formulario de producto

@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Credential::class], version = 2) // 🔹 incrementa la versión
+@Database(entities = [Credential::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun credentialDao(): CredentialDao
 
@@ -19,9 +19,12 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
+        lateinit var instance: AppDatabase
+            private set
+
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
+                val dbInstance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "levelup_dbv2"
@@ -29,8 +32,10 @@ abstract class AppDatabase : RoomDatabase() {
                     .addCallback(DatabaseCallback(context))
                     .fallbackToDestructiveMigration()
                     .build()
-                INSTANCE = instance
-                instance
+
+                INSTANCE = dbInstance
+                instance = dbInstance
+                dbInstance
             }
         }
     }
@@ -41,7 +46,6 @@ abstract class AppDatabase : RoomDatabase() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
 
-            // Inserta usuario inicial en la BD
             CoroutineScope(Dispatchers.IO).launch {
                 getDatabase(context).credentialDao().insert(
                     Credential(

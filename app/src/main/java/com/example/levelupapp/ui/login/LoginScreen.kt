@@ -1,6 +1,5 @@
 package com.example.levelupapp.ui.login
 
-import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -20,15 +18,15 @@ import androidx.navigation.NavController
 import com.example.levelupapp.R
 import com.example.levelupapp.ui.theme.LevelUpAppTheme
 import com.example.levelupapp.viewmodel.LoginViewModel
+import com.example.levelupapp.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    vm: LoginViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel()
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
-    val vm = remember { LoginViewModel(context) }
-
     val state = vm.uiState
     var showPass by remember { mutableStateOf(false) }
 
@@ -42,10 +40,10 @@ fun LoginScreen(
                     )
                 )
             }
-        ) { padding ->
+        ) { paddingValues ->
             Column(
                 modifier = Modifier
-                    .padding(padding)
+                    .padding(paddingValues)
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(24.dp),
@@ -62,11 +60,13 @@ fun LoginScreen(
                 )
 
                 Spacer(Modifier.height(32.dp))
+
                 Text(
                     text = "Bienvenido",
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
+
                 Spacer(Modifier.height(24.dp))
 
                 OutlinedTextField(
@@ -99,7 +99,14 @@ fun LoginScreen(
                 Spacer(Modifier.height(24.dp))
 
                 Button(
-                    onClick = { vm.login { user -> navController.navigate("drawer/$user") } },
+                    onClick = {
+                        vm.login { user ->
+                            mainViewModel.setUserName(user)
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        }
+                    },
                     enabled = !state.isLoading,
                     modifier = Modifier.fillMaxWidth(0.6f)
                 ) {
