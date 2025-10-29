@@ -24,4 +24,9 @@ class AuthRepository(private val dao: CredentialDao) {
         )
         return true
     }
+
+    suspend fun getUserByEmail(email: String): Credential? {
+        return dao.getUserByEmail(email)
+    }
+
 }

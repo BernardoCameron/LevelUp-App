@@ -7,6 +7,8 @@ import com.example.levelupapp.data.model.Product
 
 class MainViewModel : ViewModel() {
     private val _userName = MutableStateFlow("")
+    private val _userEmail = MutableStateFlow("")
+    val userEmail = _userEmail.asStateFlow()
     val userName = _userName.asStateFlow()
 
     private val _featuredProducts = MutableStateFlow<List<Product>>(emptyList())
@@ -32,6 +34,13 @@ class MainViewModel : ViewModel() {
         )
     }
 
+
+
+
+    fun setUser(name: String, email: String) {
+        _userName.value = name
+        _userEmail.value = email
+    }
     fun setUserName(name: String) {
         _userName.value = name
     }

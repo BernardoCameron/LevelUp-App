@@ -29,16 +29,15 @@ class LoginViewModel : ViewModel() {
         uiState = uiState.copy(password = value, error = null)
     }
 
-    fun login(onSuccess: (String) -> Unit) {
+    fun login(onSuccess: (String, String) -> Unit) {
         viewModelScope.launch {
             uiState = uiState.copy(isLoading = true, error = null)
-
-            val user = repo.login(uiState.email.trim(), uiState.password)
+            val user = repo.getUserByEmail(uiState.email.trim())
 
             uiState = uiState.copy(isLoading = false)
 
-            if (user != null) {
-                onSuccess(user.username)
+            if (user != null && user.password == uiState.password) {
+                onSuccess(user.username, user.email)
             } else {
                 uiState = uiState.copy(error = "Credenciales inválidas")
             }

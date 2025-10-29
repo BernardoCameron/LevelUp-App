@@ -100,8 +100,8 @@ fun LoginScreen(
 
                 Button(
                     onClick = {
-                        vm.login { user ->
-                            mainViewModel.setUserName(user)
+                        vm.login { user, email ->
+                            mainViewModel.setUser(user, email)
                             navController.navigate("main") {
                                 popUpTo("login") { inclusive = true }
                             }
