@@ -16,6 +16,7 @@ import com.example.levelupapp.ui.main.MainScreen
 import com.example.levelupapp.view.DrawerMenu
 import com.example.levelupapp.view.ProductoFormScreen
 import com.example.levelupapp.viewmodel.MainViewModel
+import com.example.levelupapp.ui.admin.AdminScreen
 
 @Composable
 fun AppNav() {
@@ -38,6 +39,10 @@ fun AppNav() {
 
         composable("main"){
             MainScreen(navController = navController, mainViewModel = mainViewModel)
+        }
+
+        composable("admin"){
+            AdminScreen(navController = navController)
         }
 
         // Formulario de producto

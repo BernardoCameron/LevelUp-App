@@ -47,7 +47,19 @@ fun MainScreen(
                 userName = userName,
                 isAdmin = userEmail.endsWith("@levelup.com"),
                 featuredProducts = destacados,
-                onItemSelected = { }, // falta implementar
+                onItemSelected = { route ->
+                    when (route) {
+                        "admin" -> {
+                            navController.navigate("admin")
+                        }
+                        "categories" -> {
+                            // por implementar categorias
+                        }
+                        else -> {
+                            // para manejar errores
+                        }
+                    }
+                },
                 onLogout = {
                     navController.navigate("login") {
                         popUpTo("main") { inclusive = true }

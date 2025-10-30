@@ -6,14 +6,17 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.levelupapp.data.dao.CredentialDao
+import com.example.levelupapp.data.dao.ProductoDao
 import com.example.levelupapp.data.model.Credential
+import com.example.levelupapp.data.model.Product
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Credential::class], version = 2)
+@Database(entities = [Credential::class, Product::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun credentialDao(): CredentialDao
+    abstract fun productDao(): ProductoDao
 
     companion object {
         @Volatile
