@@ -183,7 +183,10 @@ fun MainScreen(
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(producto.nombre, fontWeight = FontWeight.Bold)
-                                Text(producto.precio, color = MaterialTheme.colorScheme.primary)
+                                Text(
+                                    text = "$${"%,.0f".format(producto.precio)}",
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Button(onClick = { /* acción futura */ }) {
                                     Text("Comprar")
@@ -198,9 +201,10 @@ fun MainScreen(
 }
 
 @Composable
-fun getImageResId(imageName: String): Int {
+fun getImageResId(imageName: String?): Int {
     val context = LocalContext.current
     return remember(imageName) {
-        context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        val resId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        if (resId == 0) R.drawable.placeholder else resId
     }
 }

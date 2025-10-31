@@ -123,7 +123,10 @@ private fun ProductosSection(navController: NavController, vm: AdminViewModel) {
                         ) {
                             Column {
                                 Text(producto.nombre, style = MaterialTheme.typography.titleMedium)
-                                Text(producto.precio, color = MaterialTheme.colorScheme.primary)
+                                Text(
+                                    text = "$${"%,.0f".format(producto.precio)}",
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                             }
                             Row {
                                 IconButton(onClick = { vm.deleteProduct(producto.id) }) {

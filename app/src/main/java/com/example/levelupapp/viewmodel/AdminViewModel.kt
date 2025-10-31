@@ -7,41 +7,42 @@ import com.example.levelupapp.data.model.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 
 class AdminViewModel : ViewModel() {
 
-    private val dao = AppDatabase.instance.productDao()
+    private val productoDao = AppDatabase.instance.productDao()
+
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products = _products.asStateFlow()
 
     init {
-        loadProducts()
+        observeProducts()
     }
 
-    fun loadProducts() {
+    private fun observeProducts() {
         viewModelScope.launch {
-            _products.value = dao.getAll()
+            productoDao.getAll().collectLatest { list ->
+                _products.value = list
+            }
         }
     }
 
     fun addProduct(product: Product) {
         viewModelScope.launch {
-            dao.insert(product)
-            loadProducts()
+            productoDao.insert(product)
         }
     }
 
     fun deleteProduct(id: Int) {
         viewModelScope.launch {
-            dao.deleteById(id)
-            loadProducts()
+            productoDao.deleteById(id)
         }
     }
 
     fun updateProduct(product: Product) {
         viewModelScope.launch {
-            dao.update(product)
-            loadProducts()
+            productoDao.update(product)
         }
     }
 }

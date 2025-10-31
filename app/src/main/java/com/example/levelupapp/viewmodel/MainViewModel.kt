@@ -1,46 +1,46 @@
 package com.example.levelupapp.viewmodel
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import androidx.lifecycle.viewModelScope
+import com.example.levelupapp.data.database.AppDatabase
 import com.example.levelupapp.data.model.Product
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
+    private val productoDao = AppDatabase.instance.productDao()
     private val _userName = MutableStateFlow("")
     private val _userEmail = MutableStateFlow("")
     val userEmail = _userEmail.asStateFlow()
     val userName = _userName.asStateFlow()
 
-    private val _featuredProducts = MutableStateFlow<List<Product>>(emptyList())
-    val featuredProducts = _featuredProducts.asStateFlow()
+    val featuredProducts: StateFlow<List<Product>> =
+        productoDao.getDestacados().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    private val _recommendedProducts = MutableStateFlow<List<Product>>(emptyList())
-    val recommendedProducts = _recommendedProducts.asStateFlow()
+    val recommendedProducts: StateFlow<List<Product>> =
+        productoDao.getAll()
+            .map { it.filter { prod -> !prod.destacado } }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
 
     init {
-        //cambiar a datos de la bd
-        _featuredProducts.value = listOf(
-            Product(1, "Auriculares", "$29.990", "headphones"),
-            Product(2, "Teclado Mecánico", "$45.990", "keyboard"),
-            Product(3, "Mouse Inalámbrico", "$15.990", "mouse")
-        )
-
-        _recommendedProducts.value = listOf(
-            Product(4, "Monitor 24''", "$119.990", "monitor"),
-            Product(5, "Tablet Lenovo", "$229.990", "tablet"),
-            Product(6, "Notebook HP", "$499.990", "notebook"),
-            Product(7, "Auriculares", "$29.990", "headphones"),
-            Product(8, "Parlante JBL", "$89.990", "microfono")
-        )
+        viewModelScope.launch {
+            productoDao.getAll().collect { list ->
+                println("🧩 Productos en DB: ${list.size}")
+            }
+        }
     }
-
-
-
 
     fun setUser(name: String, email: String) {
         _userName.value = name
         _userEmail.value = email
     }
+
     fun setUserName(name: String) {
         _userName.value = name
     }
