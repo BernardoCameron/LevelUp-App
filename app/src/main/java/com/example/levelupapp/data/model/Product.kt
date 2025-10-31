@@ -23,4 +23,4 @@ data class Product(
     val imagen: String,
     val categoriaId: Int,
     val destacado: Boolean = false
-)
+) : java.io.Serializable

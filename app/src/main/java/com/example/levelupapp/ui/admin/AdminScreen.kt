@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.levelupapp.viewmodel.AdminViewModel
+import com.google.gson.Gson
+import java.net.URLEncoder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,7 +135,8 @@ private fun ProductosSection(navController: NavController, vm: AdminViewModel) {
                                     Icon(Icons.Default.Delete, contentDescription = "Eliminar")
                                 }
                                 IconButton(onClick = {
-                                    navController.navigate("edit_product/${producto.id}")
+                                    val productJson = URLEncoder.encode(Gson().toJson(producto), "UTF-8")
+                                    navController.navigate("editarProducto/$productJson")
                                 }) {
                                     Icon(Icons.Default.Edit, contentDescription = "Editar")
                                 }

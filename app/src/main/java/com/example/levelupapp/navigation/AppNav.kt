@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.levelupapp.data.model.Product
 import com.example.levelupapp.ui.login.LoginScreen
 import com.example.levelupapp.viewmodel.LoginViewModel
 import com.example.levelupapp.ui.login.RegisterScreen
@@ -17,11 +18,16 @@ import com.example.levelupapp.view.DrawerMenu
 import com.example.levelupapp.view.ProductoFormScreen
 import com.example.levelupapp.viewmodel.MainViewModel
 import com.example.levelupapp.ui.admin.AdminScreen
+import com.example.levelupapp.view.EditProductScreen
+import com.example.levelupapp.viewmodel.AdminViewModel
+import com.google.gson.Gson
+import java.net.URLDecoder
 
 @Composable
 fun AppNav() {
     val mainViewModel: MainViewModel = viewModel()
     val navController = rememberNavController()
+    val adminViewModel: AdminViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -43,6 +49,24 @@ fun AppNav() {
 
         composable("admin"){
             AdminScreen(navController = navController)
+        }
+        composable(
+            route = "editarProducto/{productoJson}",
+            arguments = listOf(navArgument("productoJson") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val productoJson = backStackEntry.arguments?.getString("productoJson")
+            val producto = productoJson?.let {
+                val decoded = URLDecoder.decode(it, "UTF-8")
+                Gson().fromJson(decoded, Product::class.java)
+            }
+
+            producto?.let {
+                EditProductScreen(
+                    navController = navController,
+                    product = it,
+                    viewModel = adminViewModel
+                )
+            }
         }
 
         // Formulario de producto
