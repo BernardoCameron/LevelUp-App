@@ -2,10 +2,8 @@ package com.example.levelupapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val BluePrimary = Color(0xFF00C8FF)
-val BlueSecondary = Color(0xFF0096D1)
-val PurpleAccent = Color(0xFF7B42FF)
-val DarkBackground = Color(0xFF0E111A)
-val SurfaceColor = Color(0xFF1A1F2E)
-val TextPrimary = Color(0xFFE1E7EF)
-val TextSecondary = Color(0xFFB0BACB)
+val ElectricBlue = Color(0xFF1E90FF) // Azul Eléctrico
+val NeonGreen = Color(0xFF39FF14)    // Verde Neón
+val BlackPrimaryBackground = Color(0xFF000000)   // Negro (Fondo Principal)
+val WhiteText = Color(0xFFFFFFFF)               // Blanco (Texto Principal)
+val LightGraySecondaryText = Color(0xFFD3D3D3)  // Gris Claro (Texto Secundario)
