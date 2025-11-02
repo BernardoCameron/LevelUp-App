@@ -18,6 +18,7 @@ import com.example.levelupapp.ui.theme.*
 fun DrawerMenu(
     userName: String,
     isAdmin: Boolean,
+    isDuocUser: Boolean = false,
     featuredProducts: List<Product> = emptyList(),
     onItemSelected: (String) -> Unit,
     onLogout: () -> Unit
@@ -57,7 +58,6 @@ fun DrawerMenu(
 
             DrawerOption("Categorías") { onItemSelected("categories") }
 
-            // 🔽 Productos destacados con sublista
             Column {
                 DrawerOption(
                     title = "Productos destacados",

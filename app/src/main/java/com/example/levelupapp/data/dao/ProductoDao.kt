@@ -23,4 +23,8 @@ interface ProductoDao {
 
     @Query("SELECT COUNT(*) FROM producto")
     suspend fun countAll(): Int
+
+    @Query("SELECT * FROM producto WHERE id = :id LIMIT 1")
+    suspend fun getById(id: Int): Product?
+
 }

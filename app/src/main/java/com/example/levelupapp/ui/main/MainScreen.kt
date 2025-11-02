@@ -1,6 +1,7 @@
 package com.example.levelupapp.ui.main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -20,11 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.levelupapp.viewmodel.MainViewModel
-import kotlinx.coroutines.launch
 import com.example.levelupapp.R
+import com.example.levelupapp.viewmodel.MainViewModel
 import com.example.levelupapp.view.DrawerMenu
-
+import com.example.levelupapp.data.model.Product
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,6 +37,7 @@ fun MainScreen(
     val destacados by mainViewModel.featuredProducts.collectAsState()
     val productos by mainViewModel.recommendedProducts.collectAsState()
     val userEmail by mainViewModel.userEmail.collectAsState()
+    val isDuocUser = userEmail.endsWith("@duocuc.cl", ignoreCase = true)
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -46,19 +48,10 @@ fun MainScreen(
             DrawerMenu(
                 userName = userName,
                 isAdmin = userEmail.endsWith("@levelup.com"),
+                isDuocUser = userEmail.endsWith("@duocuc.cl", ignoreCase = true),
                 featuredProducts = destacados,
                 onItemSelected = { route ->
-                    when (route) {
-                        "admin" -> {
-                            navController.navigate("admin")
-                        }
-                        "categories" -> {
-                            // por implementar categorias
-                        }
-                        else -> {
-                            // para manejar errores
-                        }
-                    }
+                    if (route == "admin") navController.navigate("admin")
                 },
                 onLogout = {
                     navController.navigate("login") {
@@ -86,12 +79,24 @@ fun MainScreen(
                     .padding(16.dp)
                     .fillMaxSize()
             ) {
-                // content ppal
                 Text(
-                    text = "Bienvenido, $userName 👋",
+                    text = "Bienvenido, $userName",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.primary
                 )
+                Text(
+                    text = userName,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+
+                if (isDuocUser) {
+                    Text(
+                        text = "Usuario Duoc UC - 20% OFF en productos",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -113,85 +118,35 @@ fun MainScreen(
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
-                Text("Destacados", style = MaterialTheme.typography.titleMedium)
+                Text("🔥 Destacados", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(destacados) { producto ->
-                        Card(
-                            modifier = Modifier
-                                .width(160.dp)
-                                .height(180.dp),
-                            elevation = CardDefaults.cardElevation(4.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.BottomStart
-                            ) {
-                                val imageResId = getImageResId(producto.imagen)
-                                Image(
-                                    painter = painterResource(id = imageResId),
-                                    contentDescription = producto.nombre,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier.fillMaxSize()
-                                )
-                                Surface(
-                                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = producto.nombre,
-                                        modifier = Modifier.padding(8.dp)
-                                    )
-                                }
-                            }
-                        }
+                    items(productos) { producto ->
+                        ProductoCard(producto = producto, navController = navController, isDuocUser = isDuocUser)
                     }
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
-                Text("Productos recomendados", style = MaterialTheme.typography.titleMedium)
+                Text("⭐ Productos recomendados", style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(productos) { producto ->
-                        val imageResId = getImageResId(producto.imagen)
-                        Card(
-                            shape = MaterialTheme.shapes.medium,
-                            elevation = CardDefaults.cardElevation(3.dp),
-                            modifier = Modifier.height(200.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(8.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Image(
-                                    painter = painterResource(id = imageResId),
-                                    contentDescription = producto.nombre,
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier
-                                        .height(100.dp)
-                                        .fillMaxWidth()
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(producto.nombre, fontWeight = FontWeight.Bold)
-                                Text(
-                                    text = "$${"%,.0f".format(producto.precio)}",
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Spacer(modifier = Modifier.height(6.dp))
-                                Button(onClick = { /* acción futura */ }) {
-                                    Text("Comprar")
-                                }
-                            }
+                Box(modifier = Modifier.weight(1f)) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(productos) { producto ->
+                            ProductoCard(
+                                producto = producto,
+                                navController = navController,
+                                isDuocUser = isDuocUser
+                            )
                         }
                     }
                 }
@@ -201,10 +156,63 @@ fun MainScreen(
 }
 
 @Composable
-fun getImageResId(imageName: String?): Int {
+private fun ProductoCard(
+    producto: Product,
+    navController: NavController,
+    isDuocUser: Boolean
+) {
+    val context = LocalContext.current
+
+    val imageResId = remember(producto.imagen) {
+        context.resources.getIdentifier(producto.imagen, "drawable", context.packageName)
+            .takeIf { it != 0 } ?: com.example.levelupapp.R.drawable.logo_lvlup
+    }
+
+    Card(
+        modifier = Modifier
+            .clickable {
+                navController.navigate("productDetail/${producto.id}?isDuoc=${isDuocUser}")
+            }
+            .height(260.dp),
+        elevation = CardDefaults.cardElevation(5.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = imageResId),
+                contentDescription = producto.nombre,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .height(120.dp)
+                    .fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(producto.nombre, fontWeight = FontWeight.Bold)
+            Text(
+                text = "$${"%,.0f".format(producto.precio)}",
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(
+                onClick = {
+                    navController.navigate("productDetail/${producto.id}?isDuoc=${isDuocUser}")
+                },
+                modifier = Modifier.fillMaxWidth(0.8f)
+            ) {
+                Text("Ver más")
+            }
+        }
+    }
+}
+
+
+
+@Composable
+fun getImageResId(imageName: String): Int {
     val context = LocalContext.current
     return remember(imageName) {
-        val resId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
-        if (resId == 0) R.drawable.placeholder else resId
+        context.resources.getIdentifier(imageName, "drawable", context.packageName)
     }
 }

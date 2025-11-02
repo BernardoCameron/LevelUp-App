@@ -24,6 +24,7 @@ import com.example.levelupapp.view.AddProductScreen
 import com.example.levelupapp.view.EditProductScreen
 import com.example.levelupapp.view.QrScannerScreen
 import com.example.levelupapp.viewmodel.AdminViewModel
+import com.example.levelupapp.view.ProductDetailScreen
 import com.google.gson.Gson
 import java.net.URLDecoder
 
@@ -73,6 +74,27 @@ fun AppNav() {
             }
         }
 
+        composable(
+            route = "productDetail/{productId}?isDuoc={isDuoc}",
+            arguments = listOf(
+                navArgument("productId") { type = NavType.IntType },
+                navArgument("isDuoc") {
+                    type = NavType.StringType
+                    defaultValue = "false"
+                }
+            )
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt("productId") ?: 0
+            val isDuocUser = backStackEntry.arguments?.getString("isDuoc")?.toBoolean() ?: false
+
+            ProductDetailScreen(
+                navController = navController,
+                productId = productId,
+                isDuocUser = isDuocUser
+            )
+        }
+
+
         composable("add_product") {
             AddProductScreen(navController = navController, viewModel = adminViewModel)
         }
@@ -93,7 +115,6 @@ fun AppNav() {
 
 
 
-        // Formulario de producto
         composable(
             route = "productoForm/{nombre}/{precio}",
             arguments = listOf(
