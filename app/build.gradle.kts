@@ -52,6 +52,26 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation("com.google.code.gson:gson:2.10.1")
+    //  implementation(libs.androidx.compose.runtime.livedata)
+
+    // Option 1: If you add it to libs.versions.toml
+    //implementation(libs.androidx.compose.runtime.livedata)
+    // OR Option 2: Direct notation
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    // CameraX
+    val camerax_version = "1.3.3"
+    implementation("androidx.camera:camera-core:$camerax_version")
+    implementation("androidx.camera:camera-camera2:$camerax_version")
+    implementation("androidx.camera:camera-lifecycle:$camerax_version")
+    implementation("androidx.camera:camera-view:$camerax_version")
+
+    // ZXing para leer QR
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    // ML Kit Barcode Scanning
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -62,9 +82,11 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.7.0-beta01")
 
 
-    implementation("androidx.room:room-runtime:2.6.1")  // Versión actualizada
-    kapt("androidx.room:room-compiler:2.6.1")          // Misma versión
-    implementation("androidx.room:room-ktx:2.6.1")     // Misma versión
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.androidx.foundation)
+    implementation(libs.play.services.mlkit.barcode.scanning)
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 
 
     testImplementation(libs.junit)

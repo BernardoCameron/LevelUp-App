@@ -3,6 +3,7 @@ package com.example.levelupapp.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,7 +19,10 @@ import com.example.levelupapp.view.DrawerMenu
 import com.example.levelupapp.view.ProductoFormScreen
 import com.example.levelupapp.viewmodel.MainViewModel
 import com.example.levelupapp.ui.admin.AdminScreen
+import com.example.levelupapp.utils.CameraPermissionHelper
+import com.example.levelupapp.view.AddProductScreen
 import com.example.levelupapp.view.EditProductScreen
+import com.example.levelupapp.view.QrScannerScreen
 import com.example.levelupapp.viewmodel.AdminViewModel
 import com.google.gson.Gson
 import java.net.URLDecoder
@@ -68,6 +72,26 @@ fun AppNav() {
                 )
             }
         }
+
+        composable("add_product") {
+            AddProductScreen(navController = navController, viewModel = adminViewModel)
+        }
+
+        composable("qrScanner") {
+            QrScannerScreen(
+                onQrDetected = { codigo ->
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("codigoBarras", codigo)
+                    navController.popBackStack()
+                },
+                hasCameraPermission = CameraPermissionHelper.hasCameraPermission(LocalContext.current),
+                onRequestPermission = {
+                }
+            )
+        }
+
+
 
         // Formulario de producto
         composable(

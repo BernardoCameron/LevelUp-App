@@ -22,5 +22,6 @@ data class Product(
     val precio: Double,
     val imagen: String,
     val categoriaId: Int,
-    val destacado: Boolean = false
+    val destacado: Boolean = false,
+    val codigoBarras: String? = null
 ) : java.io.Serializable
