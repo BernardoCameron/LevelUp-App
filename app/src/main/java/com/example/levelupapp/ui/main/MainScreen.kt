@@ -3,6 +3,7 @@ package com.example.levelupapp.ui.main
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -73,80 +74,96 @@ fun MainScreen(
                 )
             }
         ) { innerPadding ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(16.dp)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    text = "Bienvenido, $userName",
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    text = userName,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
-                if (isDuocUser) {
+                item {
                     Text(
-                        text = "Usuario Duoc UC - 20% OFF en productos",
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.logo_lvlup),
-                        contentDescription = "Logo LevelUpApp",
-                        modifier = Modifier.size(100.dp)
+                        text = "Bienvenido, $userName",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        "Lo mejor en tecnología\nsolo acá.",
+                        text = userName,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.secondary
+                        fontWeight = FontWeight.Bold
                     )
-                }
 
-                Spacer(modifier = Modifier.height(24.dp))
-                Text("🔥 Destacados", style = MaterialTheme.typography.titleMedium)
-                Spacer(modifier = Modifier.height(8.dp))
+                    if (isDuocUser) {
+                        Text(
+                            text = "Usuario Duoc UC - 20% OFF en productos",
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
 
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(productos) { producto ->
-                        ProductoCard(producto = producto, navController = navController, isDuocUser = isDuocUser)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.logo_lvlup),
+                            contentDescription = "Logo LevelUpApp",
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Text(
+                            "Lo mejor en tecnología\nsolo acá.",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
-                Text("⭐ Productos recomendados", style = MaterialTheme.typography.titleMedium)
-                Spacer(modifier = Modifier.height(8.dp))
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Text("Destacados", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                Box(modifier = Modifier.weight(1f)) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                    LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        items(productos) { producto ->
+                        items(destacados) { producto ->
                             ProductoCard(
                                 producto = producto,
                                 navController = navController,
                                 isDuocUser = isDuocUser
                             )
+                        }
+                    }
+                }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Text("Productos recomendados", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 600.dp, max = 1600.dp)
+                    ) {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            modifier = Modifier.fillMaxSize(),
+                            userScrollEnabled = false
+                        ) {
+                            items(productos) { producto ->
+                                ProductoCard(
+                                    producto = producto,
+                                    navController = navController,
+                                    isDuocUser = isDuocUser
+                                )
+                            }
                         }
                     }
                 }
