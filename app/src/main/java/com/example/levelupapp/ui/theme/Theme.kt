@@ -10,6 +10,8 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.example.levelupapp.ui.theme.*
+
 
 private val DarkColorScheme = darkColorScheme(
     primary = BluePrimary,
@@ -38,29 +40,6 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Color(0xFF1C1B1F),
     */
 )
-private val DarkColorScheme = darkColorScheme(
-    // 1. FONDO PRINCIPAL Y SUPERFICIES (Negro)
-    background = BlackPrimaryBackground,
-    surface = BlackPrimaryBackground,
-
-    // 2. COLORES DE ACENTO (Azul Eléctrico)
-    primary = ElectricBlue,
-    onPrimary = WhiteText, // Texto sobre el color primario
-
-    // 3. COLOR SECUNDARIO/ACENTO (Verde Neón)
-    secondary = NeonGreen,
-    onSecondary = BlackPrimaryBackground, // Texto sobre el color secundario
-
-    // 4. COLORES DE TEXTO (Principal: Blanco, Secundario: Gris Claro)
-    onBackground = WhiteText,
-    onSurface = WhiteText,
-    onSurfaceVariant = LightGraySecondaryText // Usaremos esto para el texto secundario
-)
-
-private val LightColorScheme = lightColorScheme(
-    // En el esquema claro, solo mantendremos tus colores de acento
-    primary = ElectricBlue,
-    secondary = NeonGreen,
 
 @Composable
 fun LevelUpAppTheme(
