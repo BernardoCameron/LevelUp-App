@@ -39,6 +39,7 @@ fun MainScreen(
     val productos by mainViewModel.recommendedProducts.collectAsState()
     val userEmail by mainViewModel.userEmail.collectAsState()
     val isDuocUser = userEmail.endsWith("@duocuc.cl", ignoreCase = true)
+    val categorias by mainViewModel.categorias.collectAsState()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -50,6 +51,7 @@ fun MainScreen(
                 userName = userName,
                 isAdmin = userEmail.endsWith("@levelup.com"),
                 isDuocUser = userEmail.endsWith("@duocuc.cl", ignoreCase = true),
+                categorias = categorias,
                 featuredProducts = destacados,
                 onItemSelected = { route ->
                     if (route == "admin") navController.navigate("admin")

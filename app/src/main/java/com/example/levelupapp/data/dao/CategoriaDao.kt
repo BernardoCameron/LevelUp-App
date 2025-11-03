@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.levelupapp.data.model.Categoria
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoriaDao {
@@ -12,5 +13,6 @@ interface CategoriaDao {
     suspend fun insert(categoria: Categoria)
 
     @Query("SELECT * FROM categoria")
-    suspend fun getAll(): List<Categoria>
+    fun getAll(): Flow<List<Categoria>>
+
 }
