@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [Credential::class, Product::class, Categoria::class],
-    version = 17
+    version = 18
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -102,16 +102,16 @@ abstract class AppDatabase : RoomDatabase() {
 
                 // insert de productos base
                 val initialProducts = listOf(
-                    Product(nombre = "Monitor 24''", descripcion = "Monitor LED Full HD 24 pulgadas", precio = 119990.0, imagen = "monitor", categoriaId = 3, destacado = false),
-                    Product(nombre = "Notebook HP", descripcion = "Notebook HP Ryzen 5 8GB RAM SSD 512GB", precio = 499990.0, imagen = "notebook", categoriaId = 3, destacado = true),
-                    Product(nombre = "Auriculares JBL", descripcion = "Auriculares Bluetooth JBL Tune 510BT", precio = 29990.0, imagen = "headphones", categoriaId = 2, destacado = true),
-                    Product(nombre = "Teclado Mecánico RGB", descripcion = "Teclado mecánico retroiluminado con switches azules", precio = 45990.0, imagen = "keyboard", categoriaId = 4, destacado = true),
-                    Product(nombre = "Mouse Inalámbrico Logitech", descripcion = "Mouse ergonómico inalámbrico", precio = 15990.0, imagen = "mouse", categoriaId = 4, destacado = true),
-                    Product(nombre = "Parlante JBL GO 3", descripcion = "Parlante portátil JBL resistente al agua", precio = 89990.0, imagen = "microfono", categoriaId = 2),
-                    Product(nombre = "Smartphone Samsung A54", descripcion = "Teléfono inteligente Samsung A54 128GB", precio = 279990.0, imagen = "phone", categoriaId = 5, destacado = true),
-                    Product(nombre = "Silla Gamer Razer", descripcion = "Silla ergonómica con soporte lumbar", precio = 229990.0, imagen = "chair", categoriaId = 4),
-                    Product(nombre = "Tablet Lenovo", descripcion = "Tablet Lenovo M10 con pantalla 10.1''", precio = 229990.0, imagen = "tablet", categoriaId = 3),
-                    Product(nombre = "Router TP-Link AX3000", descripcion = "Router WiFi 6 doble banda", precio = 99990.0, imagen = "router", categoriaId = 1, destacado = true)
+                    Product(nombre = "Monitor 24''", descripcion = "Monitor LED Full HD 24 pulgadas", precio = 119990.0, imagen = "monitor24", categoriaId = 3, destacado = false),
+                    Product(nombre = "Notebook HP", descripcion = "Notebook HP Ryzen 5 8GB RAM SSD 512GB", precio = 499990.0, imagen = "notebook_hp_ryzen", categoriaId = 3, destacado = true),
+                    Product(nombre = "Auriculares JBL", descripcion = "Auriculares Bluetooth JBL Tune 510BT", precio = 29990.0, imagen = "auriculares_jbl", categoriaId = 2, destacado = true),
+                    Product(nombre = "Teclado Mecánico RGB", descripcion = "Teclado mecánico retroiluminado con switches azules", precio = 45990.0, imagen = "teclado_mecanico_rgb", categoriaId = 4, destacado = true),
+                    Product(nombre = "Mouse Inalámbrico Logitech", descripcion = "Mouse ergonómico inalámbrico", precio = 15990.0, imagen = "mouse_ergonomico_inalambrico_logitech_mx_vertical", categoriaId = 4, destacado = true),
+                    Product(nombre = "Parlante JBL GO 3", descripcion = "Parlante portátil JBL resistente al agua", precio = 89990.0, imagen = "parlante_jbl_go_3", categoriaId = 2),
+                    Product(nombre = "Smartphone Samsung A54", descripcion = "Teléfono inteligente Samsung A54 128GB", precio = 279990.0, imagen = "galaxy_a34", categoriaId = 5, destacado = true),
+                    Product(nombre = "Silla Gamer Razer", descripcion = "Silla ergonómica con soporte lumbar", precio = 229990.0, imagen = "silla_gamer_razer_tarok_essentials_120rz00001", categoriaId = 4),
+                    Product(nombre = "Tablet Lenovo", descripcion = "Tablet Lenovo M10 con pantalla 10.1''", precio = 229990.0, imagen = "tablet_lenovo", categoriaId = 3),
+                    Product(nombre = "Router TP-Link AX3000", descripcion = "Router WiFi 6 doble banda", precio = 99990.0, imagen = "tp_link_ax3000", categoriaId = 1, destacado = true)
                 )
 
                 initialProducts.forEach { productDao.insert(it) }
@@ -123,13 +123,13 @@ abstract class AppDatabase : RoomDatabase() {
 
                     // ======= REDES =======
                     Product(nombre = "Router Gaming TP-Link AX6000", descripcion = "Router WiFi 6 con doble banda y 8 antenas de alto rendimiento.", precio = 199990.0, imagen = "router_ax6000", categoriaId = 1),
-                    Product(nombre = "Switch Gigabit 8 Puertos", descripcion = "Switch no gestionado de 8 puertos Gigabit Ethernet, ideal para LANs domésticas.", precio = 49990.0, imagen = "switch_8p", categoriaId = 1),
-                    Product(nombre = "Repetidor WiFi Mesh", descripcion = "Extensor WiFi Mesh de alta cobertura, compatible con Alexa.", precio = 69990.0, imagen = "repetidor_mesh", categoriaId = 1),
-                    Product(nombre = "Cable de Red Cat8 5m", descripcion = "Cable de red trenzado Cat8 de 5 metros, velocidad de hasta 40Gbps.", precio = 12990.0, imagen = "cable_cat8", categoriaId = 1),
-                    Product(nombre = "Adaptador USB WiFi 6E", descripcion = "Adaptador WiFi 6E USB de doble banda, velocidad 2400Mbps.", precio = 39990.0, imagen = "adaptador_wifi6", categoriaId = 1),
+                    Product(nombre = "Switch Gigabit 8 Puertos", descripcion = "Switch no gestionado de 8 puertos Gigabit Ethernet, ideal para LANs domésticas.", precio = 49990.0, imagen = "port8_gigabit_switch", categoriaId = 1),
+                    Product(nombre = "Repetidor WiFi Mesh", descripcion = "Extensor WiFi Mesh de alta cobertura, compatible con Alexa.", precio = 69990.0, imagen = "ax1800_mesh", categoriaId = 1),
+                    Product(nombre = "Cable de Red Cat8 5m", descripcion = "Cable de red trenzado Cat8 de 5 metros, velocidad de hasta 40Gbps.", precio = 12990.0, imagen = "cat8_5m", categoriaId = 1),
+                    Product(nombre = "Adaptador USB WiFi 6E", descripcion = "Adaptador WiFi 6E USB de doble banda, velocidad 2400Mbps.", precio = 39990.0, imagen = "adapt_wifi", categoriaId = 1),
 
                     // ======= AUDIO =======
-                    Product(nombre = "Auriculares Logitech G733", descripcion = "Auriculares inalámbricos RGB con micrófono desmontable y sonido DTS:X.", precio = 119990.0, imagen = "logitech_g733", categoriaId = 2),
+                    Product(nombre = "Auriculares Logitech G733", descripcion = "Auriculares inalámbricos RGB con micrófono desmontable y sonido DTS:X.", precio = 119990.0, imagen = "auriculares_logitech_g_733", categoriaId = 2),
                     Product(nombre = "Micrófono Blue Yeti X", descripcion = "Micrófono USB profesional para streaming y grabaciones.", precio = 129990.0, imagen = "blue_yeti", categoriaId = 2),
                     Product(nombre = "Parlantes Razer Nommo Chroma", descripcion = "Sistema de parlantes 2.0 con efectos RGB y bajos potentes.", precio = 149990.0, imagen = "razer_nommo", categoriaId = 2),
                     Product(nombre = "Soundbar Gamer RGB", descripcion = "Barra de sonido con subwoofer integrado y conectividad Bluetooth.", precio = 99990.0, imagen = "soundbar_rgb", categoriaId = 2),
