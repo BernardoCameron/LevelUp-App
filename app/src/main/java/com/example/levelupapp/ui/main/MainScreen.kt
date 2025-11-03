@@ -60,6 +60,10 @@ fun MainScreen(
                     mainViewModel.setCategoriaSeleccionada(catId)
                     scope.launch { drawerState.close() }
                 },
+                onProductoClick = { prodId ->
+                    navController.navigate("productDetail/$prodId?isDuoc=${isDuocUser}")
+                    scope.launch { drawerState.close() }
+                },
                 onLogout = {
                     navController.navigate("login") {
                         popUpTo("main") { inclusive = true }

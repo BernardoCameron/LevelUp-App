@@ -27,7 +27,8 @@ fun DrawerMenu(
     featuredProducts: List<Product> = emptyList(),
     onItemSelected: (String) -> Unit,
     onLogout: () -> Unit,
-    onCategoriaClick: (Int) -> Unit
+    onCategoriaClick: (Int) -> Unit,
+    onProductoClick: (Int) -> Unit
 ) {
     var showCategorias by remember { mutableStateOf(false) }
     var showFeatured by remember { mutableStateOf(false) }
@@ -130,7 +131,7 @@ fun DrawerMenu(
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
                             .padding(start = 16.dp, top = 4.dp)
-                            .clickable { onItemSelected("product_${producto.id}") }
+                            .clickable { onProductoClick(producto.id) }
                     )
                 }
 

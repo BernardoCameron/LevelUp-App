@@ -85,7 +85,7 @@ fun RegisterScreen(
             }
 
             if (success) {
-                Text("Usuario registrado correctamente ✅")
+                Text("Usuario registrado correctamente")
             }
 
             Spacer(Modifier.height(24.dp))

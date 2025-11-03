@@ -109,7 +109,7 @@ fun ProductDetailContent(
                 )
             )
             Text(
-                "🎓 Descuento exclusivo para usuarios Duoc UC",
+                "Descuento exclusivo para usuarios Duoc UC",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.secondary
             )
