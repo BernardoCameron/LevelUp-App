@@ -56,6 +56,10 @@ fun MainScreen(
                 onItemSelected = { route ->
                     if (route == "admin") navController.navigate("admin")
                 },
+                onCategoriaClick = { catId ->
+                    mainViewModel.setCategoriaSeleccionada(catId)
+                    scope.launch { drawerState.close() }
+                },
                 onLogout = {
                     navController.navigate("login") {
                         popUpTo("main") { inclusive = true }
@@ -145,6 +149,16 @@ fun MainScreen(
                     Spacer(modifier = Modifier.height(24.dp))
                     Text("Productos recomendados", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Productos recomendados", style = MaterialTheme.typography.titleMedium)
+                        TextButton(onClick = { mainViewModel.setCategoriaSeleccionada(null) }) {
+                            Text("Ver todos")
+                        }
+                    }
                 }
                 item {
                     Box(
