@@ -38,7 +38,7 @@ class MainViewModel(
             .map { list -> list.filter { it.destacado } }
             .stateIn(
                 viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
+                SharingStarted.Eagerly,
                 emptyList()
             )
 
@@ -50,7 +50,7 @@ class MainViewModel(
             }
         }.stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
+            SharingStarted.Eagerly,
             emptyList()
         )
 
@@ -98,5 +98,9 @@ class MainViewModel(
 
     fun setCategoriaSeleccionada(id: Int?) {
         _selectedCategoryId.value = id
+    }
+    // ==== SOLO PARA TESTS ====
+    internal fun setProductsForTest(list: List<Product>) {
+        _allProducts.value = list
     }
 }

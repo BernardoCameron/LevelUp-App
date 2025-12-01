@@ -24,9 +24,8 @@ object SupabaseStorageClient {
         }
         .build()
 
-    /**
-     * Sube una imagen a Supabase Storage y devuelve la URL pública, o null si falla.
-     */
+
+     // Sube una imagen a Supabase Storage y devuelve la URL pública, o null si falla.
     suspend fun uploadImage(
         bytes: ByteArray,
         mimeType: String,

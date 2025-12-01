@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 import android.content.Context
 import android.net.Uri
 
-class AdminViewModel : ViewModel() {
-
-    private val repository = ProductRepository()
+class AdminViewModel(
+    private val repository: ProductRepository = ProductRepository()
+) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products.asStateFlow()
@@ -42,12 +42,11 @@ class AdminViewModel : ViewModel() {
         codigoBarras: String?
     ) {
         viewModelScope.launch {
-            // leer bytes desde el Uri
             val resolver = context.contentResolver
             val bytes = resolver.openInputStream(imageUri)?.use { it.readBytes() }
 
             if (bytes == null) {
-                // si falla, simplemente agrega sin imagen remota
+                // si falla se agrega sin img
                 addProduct(
                     Product(
                         nombre = nombre,

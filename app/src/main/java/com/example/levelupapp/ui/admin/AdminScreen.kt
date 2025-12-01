@@ -113,7 +113,7 @@ private fun ProductosSection(navController: NavController, vm: AdminViewModel) {
         } else {
             LazyColumn(
                 modifier = Modifier
-                    .weight(1f)          // 👈 ocupa todo el espacio disponible y scrollea
+                    .weight(1f)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {

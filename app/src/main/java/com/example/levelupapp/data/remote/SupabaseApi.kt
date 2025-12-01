@@ -12,10 +12,6 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.Response
 
-
-
-
-
 data class ProductPayload(
     val nombre: String,
     val descripcion: String,
@@ -46,7 +42,6 @@ interface SupabaseApi {
         @Body producto: ProductPayload
     ): List<Product>
 
-    // 👇 Editar producto (PATCH)
     @Headers("Prefer: return=representation")
     @PATCH("producto")
     suspend fun updateProducto(
@@ -54,10 +49,9 @@ interface SupabaseApi {
         @Body producto: ProductPayload
     ): List<Product>
 
-    // 👇 Eliminar producto (DELETE)
     @DELETE("producto")
     suspend fun deleteProducto(
-        @Query("id") idFilter: String    // ej: "eq.12"
+        @Query("id") idFilter: String
     ): Response<Unit>
 
 }

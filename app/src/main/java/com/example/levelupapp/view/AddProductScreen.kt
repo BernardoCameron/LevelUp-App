@@ -43,7 +43,7 @@ fun AddProductScreen(
         )
     }
 
-    // 👇 NUEVO: Uri de la imagen seleccionada
+    // obtiene uri de la imagen
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
 
     // launcher para galería
@@ -51,7 +51,7 @@ fun AddProductScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         selectedImageUri = uri
-        // opcional: mostrar la uri en el campo imagen
+        // muestra el nombre del archivo, falta arreglarlo
         imagen = uri?.lastPathSegment ?: ""
     }
 
@@ -172,7 +172,7 @@ fun AddProductScreen(
                         val codigo = codigoBarras.ifEmpty { null }
 
                         if (selectedImageUri != null) {
-                            // 👉 subir imagen a Supabase Storage y luego crear producto
+                            // sube imagen dps crea producto
                             viewModel.addProductWithImage(
                                 context = context,
                                 imageUri = selectedImageUri!!,
@@ -184,7 +184,7 @@ fun AddProductScreen(
                                 codigoBarras = codigo
                             )
                         } else {
-                            // 👉 sin imagen local, usamos lo que haya en el campo imagen (URL) o default
+                            // agregar producto
                             viewModel.addProduct(
                                 Product(
                                     nombre = nombre,
