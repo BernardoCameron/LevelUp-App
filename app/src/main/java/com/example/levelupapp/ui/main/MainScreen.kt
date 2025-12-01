@@ -39,6 +39,10 @@ fun MainScreen(
     mainViewModel: MainViewModel = viewModel()
 ) {
 
+    LaunchedEffect(Unit) {
+        mainViewModel.reloadProductos()
+    }
+
     val lifecycleOwner = LocalLifecycleOwner.current
 
     DisposableEffect(lifecycleOwner) {

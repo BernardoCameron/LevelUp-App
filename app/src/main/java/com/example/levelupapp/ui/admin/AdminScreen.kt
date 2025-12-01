@@ -24,6 +24,10 @@ fun AdminScreen(
     navController: NavController,
     vm: AdminViewModel = viewModel()
 ) {
+
+    LaunchedEffect(Unit) {
+        vm.refreshProducts()
+    }
     var selectedTab by remember { mutableStateOf("productos") } // estado: productos / usuarios
 
     val products by vm.products.collectAsState()

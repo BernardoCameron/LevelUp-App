@@ -85,6 +85,12 @@ class MainViewModel(
         }
     }
 
+    fun reloadProductos() {
+        viewModelScope.launch {
+            loadProductos()
+        }
+    }
+
     // ===== funciones que usa LoginScreen / MainScreen =====
 
     fun setUser(name: String, email: String) {
