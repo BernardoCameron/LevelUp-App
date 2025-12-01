@@ -27,6 +27,7 @@ import com.example.levelupapp.viewmodel.MainViewModel
 import com.example.levelupapp.view.DrawerMenu
 import com.example.levelupapp.data.model.Product
 import kotlinx.coroutines.launch
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -198,13 +199,6 @@ private fun ProductoCard(
     navController: NavController,
     isDuocUser: Boolean
 ) {
-    val context = LocalContext.current
-
-    val imageResId = remember(producto.imagen) {
-        context.resources.getIdentifier(producto.imagen, "drawable", context.packageName)
-            .takeIf { it != 0 } ?: com.example.levelupapp.R.drawable.logo_lvlup
-    }
-
     Card(
         modifier = Modifier
             .clickable {
@@ -217,21 +211,28 @@ private fun ProductoCard(
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = imageResId),
+            AsyncImage(
+                model = producto.imagen,
                 contentDescription = producto.nombre,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .height(120.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                placeholder = painterResource(id = com.example.levelupapp.R.drawable.logo_lvlup),
+                error = painterResource(id = com.example.levelupapp.R.drawable.logo_lvlup)
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             Text(producto.nombre, fontWeight = FontWeight.Bold)
+
             Text(
                 text = "$${"%,.0f".format(producto.precio)}",
                 color = MaterialTheme.colorScheme.primary
             )
+
             Spacer(modifier = Modifier.height(8.dp))
+
             Button(
                 onClick = {
                     navController.navigate("productDetail/${producto.id}?isDuoc=${isDuocUser}")

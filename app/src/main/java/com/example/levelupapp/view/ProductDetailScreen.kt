@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.levelupapp.data.model.Product
 import com.example.levelupapp.viewmodel.ProductDetailViewModel
 import kotlinx.coroutines.launch
@@ -79,13 +80,15 @@ fun ProductDetailContent(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = imageRes),
+        AsyncImage(
+            model = product.imagen,
             contentDescription = product.nombre,
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
+                .height(250.dp),
+            error = painterResource(id = com.example.levelupapp.R.drawable.logo_lvlup),
+            placeholder = painterResource(id = com.example.levelupapp.R.drawable.logo_lvlup)
         )
 
         Spacer(Modifier.height(16.dp))
