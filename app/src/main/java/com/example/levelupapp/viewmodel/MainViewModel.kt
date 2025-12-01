@@ -61,6 +61,12 @@ class MainViewModel(
         }
     }
 
+    fun refreshProductos() {
+        viewModelScope.launch {
+            loadProductos()
+        }
+    }
+
     private suspend fun loadCategorias() {
         try {
             _categorias.value = repository.getCategorias()
