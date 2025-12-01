@@ -1,4 +1,4 @@
-# LevelUp �
+# LevelUp 
 
 Aplicación Android de catálogo de productos gamer/electrónica, con login local y consumo de una API externa en Supabase para productos y categorías.
 
@@ -105,21 +105,109 @@ Solo visible para usuarios con correo `@levelup.com`.
 
 ---
 
-## 4. Endpoints utilizados
+## 4. Endpoints utilizados (API externa y microservicio)
 
 La API externa utilizada es **Supabase** (PostgREST + Storage).  
 El proyecto asume un `SUPABASE_URL` del tipo:
 
-```text
-https://proyecto.supabase.co y un SUPABASE_ANON_KEY configurado en el código.
+`https://<PROJECT>.supabase.co`
+
+y un `SUPABASE_ANON_KEY` configurado en el código.
+
+---
 
 ### 4.1. Endpoints REST – Productos
 
 **Base:**  
-`https://proyecto.supabase.co/rest/v1/`
+`https://<PROJECT>.supabase.co/rest/v1/`
 
 **Tabla `producto`:**
 
 - **Obtener todos los productos**
-  ```http
-  GET /rest/v1/producto?select=*
+
+  `GET /rest/v1/producto?select=*`
+
+- **Obtener producto por ID**
+`GET /rest/v1/producto?id=eq.<ID>&select=*`
+
+- **Guardar producto**
+
+`POST /rest/v1/producto
+Headers:
+  apikey: <SUPABASE_ANON_KEY>
+  Authorization: Bearer <SUPABASE_ANON_KEY>
+  Prefer: return=representation`
+
+`Body (JSON):
+{
+  "nombre": "Monitor 24''",
+  "descripcion": "Monitor LED Full HD 24 pulgadas",
+  "precio": 119990.0,
+  "categoriaId": 3,
+  "destacado": true,
+  "foto": "https://<PROJECT>.supabase.co/storage/v1/object/public/imgs/product_123.jpg"
+}`
+
+- **Actualizar producto**
+
+`PATCH /rest/v1/producto?id=eq.<ID>
+  Headers:
+  apikey: <SUPABASE_ANON_KEY>
+  Authorization: Bearer <SUPABASE_ANON_KEY>`
+
+`Body (JSON, solo campos a actualizar):
+{
+  "precio": 109990.0,
+  "destacado": false
+}`
+
+- **Eliminar producto **
+
+`DELETE /rest/v1/producto?id=eq.<ID>
+Headers:
+  apikey: <SUPABASE_ANON_KEY>
+  Authorization: Bearer <SUPABASE_ANON_KEY>`
+
+## 4.2. Endpoints REST – Categorías
+
+Tabla categoria:
+
+**Obtener todas las categorías**
+
+`GET /rest/v1/categoria?select=*
+Headers:
+  apikey: <SUPABASE_ANON_KEY>
+  Authorization: Bearer <SUPABASE_ANON_KEY>`
+
+Las categorías se consumen al iniciar el MainViewModel y se usan en el Drawer y en los filtros del home.
+
+##4.3. Supabase Storage – Imágenes
+
+Bucket utilizado: imgs
+
+Subir imagen de producto
+(la app lo hace vía OkHttp/cliente HTTP desde Android)
+
+`POST /storage/v1/object/imgs/product_<TIMESTAMP>.jpg
+Headers:
+  apikey: <SUPABASE_ANON_KEY>
+  Authorization: Bearer <SUPABASE_ANON_KEY>
+  Content-Type: image/jpeg`
+
+`Body:
+  <bytes del archivo de imagen>`
+  
+Acceso público a la imagen
+  `https://<PROJECT>.supabase.co/storage/v1/object/public/imgs/product_<TIMESTAMP>.jpg`
+
+La app genera nombres del tipo:
+`product_<timestamp>.jpg`
+
+##5. Pasos para ejecutar
+##-5.1. Requisitos
+    -Android Studio (Koala / Iguana o superior).
+    -JDK 17.
+    -Dispositivo físico o emulador con Android 8.0+ (API 26+).
+    -Cuenta y proyecto en Supabase con:
+    -Tablas producto y categoria.
+    -Bucket de Storage llamado imgs.
