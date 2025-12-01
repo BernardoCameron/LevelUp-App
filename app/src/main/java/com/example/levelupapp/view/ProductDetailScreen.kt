@@ -34,7 +34,7 @@ fun ProductDetailScreen(
     val product by viewModel.product.collectAsState()
 
     LaunchedEffect(productId) {
-        viewModel.loadProductById(productId)
+        viewModel.loadProduct(productId)
     }
 
     Scaffold(

@@ -2,25 +2,27 @@ package com.example.levelupapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.levelupapp.data.database.AppDatabase
 import com.example.levelupapp.data.model.Product
+import com.example.levelupapp.data.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProductDetailViewModel : ViewModel() {
+    private val repository = ProductRepository()
 
     private val _product = MutableStateFlow<Product?>(null)
-    val product = _product.asStateFlow()
+    val product: StateFlow<Product?> = _product.asStateFlow()
 
-    fun loadProductById(productId: Int) {
+    fun loadProduct(id: Int) {
         viewModelScope.launch {
             try {
-                val productDao = AppDatabase.instance.productDao()
-                val result = productDao.getById(productId)
-                _product.value = result
+                val list = repository.getProductos()
+                _product.value = list.find { it.id == id }
             } catch (e: Exception) {
                 e.printStackTrace()
+                _product.value = null
             }
         }
     }

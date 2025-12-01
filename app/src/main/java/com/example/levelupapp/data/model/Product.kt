@@ -1,27 +1,16 @@
 package com.example.levelupapp.data.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
-@Entity(
-    tableName = "producto",
-    foreignKeys = [
-        ForeignKey(
-            entity = Categoria::class,
-            parentColumns = ["id"],
-            childColumns = ["categoriaId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
 data class Product(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val id: Int = 0,
     val nombre: String,
     val descripcion: String,
     val precio: Double,
-    val imagen: String,
+    @SerializedName("foto")
+    val imagen: String,        // viene de la columna "foto" en Supabase
     val categoriaId: Int,
     val destacado: Boolean = false,
+    @SerializedName("codigoBarra")   // nombre de la columna en supabase, para no cambiar en el code
     val codigoBarras: String? = null
-) : java.io.Serializable
+)

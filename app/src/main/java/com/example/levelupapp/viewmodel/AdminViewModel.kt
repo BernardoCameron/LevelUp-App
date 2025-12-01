@@ -2,47 +2,44 @@ package com.example.levelupapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.levelupapp.data.database.AppDatabase
 import com.example.levelupapp.data.model.Product
+import com.example.levelupapp.data.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collectLatest
 
-class AdminViewModel : ViewModel() {
-
-    private val productoDao = AppDatabase.instance.productDao()
+class AdminViewModel(
+    private val repository: ProductRepository = ProductRepository()
+) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
-    val products = _products.asStateFlow()
+    val products: StateFlow<List<Product>> = _products.asStateFlow()
 
     init {
-        observeProducts()
+        refreshProducts()
     }
 
-    private fun observeProducts() {
+    fun refreshProducts() {
         viewModelScope.launch {
-            productoDao.getAll().collectLatest { list ->
-                _products.value = list
+            try {
+                _products.value = repository.getProductos()
+            } catch (e: Exception) {
+                e.printStackTrace()
+
             }
         }
     }
 
     fun addProduct(product: Product) {
-        viewModelScope.launch {
-            productoDao.insert(product)
-        }
-    }
-
-    fun deleteProduct(id: Int) {
-        viewModelScope.launch {
-            productoDao.deleteById(id)
-        }
+        _products.value = _products.value + product
     }
 
     fun updateProduct(product: Product) {
-        viewModelScope.launch {
-            productoDao.update(product)
-        }
+        _products.value = _products.value.map { if (it.id == product.id) product else it }
+    }
+
+    fun deleteProduct(id: Int) {
+        _products.value = _products.value.filterNot { it.id == id }
     }
 }
