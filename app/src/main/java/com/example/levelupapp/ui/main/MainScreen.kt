@@ -176,7 +176,7 @@ fun MainScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                             modifier = Modifier.fillMaxSize(),
-                            userScrollEnabled = false
+                            userScrollEnabled = true
                         ) {
                             items(productos) { producto ->
                                 ProductoCard(

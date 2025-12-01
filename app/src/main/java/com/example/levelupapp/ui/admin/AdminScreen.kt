@@ -1,6 +1,8 @@
 package com.example.levelupapp.ui.admin
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -109,12 +111,17 @@ private fun ProductosSection(navController: NavController, vm: AdminViewModel) {
         if (products.isEmpty()) {
             Text("No hay productos registrados.")
         } else {
-            Column {
-                products.forEach { producto ->
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)          // 👈 ocupa todo el espacio disponible y scrollea
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(products) { producto ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 6.dp),
+                            .padding(vertical = 4.dp),
                         elevation = CardDefaults.cardElevation(2.dp)
                     ) {
                         Row(
